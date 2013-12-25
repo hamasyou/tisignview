@@ -5,7 +5,6 @@ function Controller() {
         imageView = Ti.UI.createImageView({
             image: e.data
         });
-        $.index.add(imageView);
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "index";
@@ -28,11 +27,10 @@ function Controller() {
     signChange ? $.__views.signView.on("change", signChange) : __defers["$.__views.signView!change!signChange"] = true;
     exports.destroy = function() {};
     _.extend($, $.__views);
-    $.index.open();
-    $.signView.destroy();
     exports.destroy = function() {
         $.signView.destroy();
     };
+    $.index.open();
     __defers["$.__views.signView!change!signChange"] && $.__views.signView.on("change", signChange);
     _.extend($, exports);
 }
