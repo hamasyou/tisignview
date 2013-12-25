@@ -1,0 +1,55 @@
+jQuery(function($) {
+  var $canvas, drawFlag, oldX, oldY, screen2client;
+  screen2client = function(e) {
+    var px, py, rect, _ref;
+    _ref = e.type.startsWith('touch') ? [e.originalEvent.touches[0].clientX, e.originalEvent.touches[0].clientY] : [e.clientX, e.clientY], px = _ref[0], py = _ref[1];
+    rect = e.target.getBoundingClientRect();
+    return {
+      x: px - rect.left,
+      y: py - rect.top
+    };
+  };
+  drawFlag = false;
+  oldX = 0;
+  oldY = 0;
+  $canvas = $('#paper');
+  $canvas.on('mousedown touchstart', function(e) {
+    var x, y, _ref, _ref1;
+    drawFlag = true;
+    _ref = screen2client(e), x = _ref.x, y = _ref.y;
+    return _ref1 = [x, y], oldX = _ref1[0], oldY = _ref1[1], _ref1;
+  });
+  $canvas.on('mouseup mouseout touchend touchcancel', function() {
+    var data;
+    drawFlag = false;
+    data = $canvas[0].toDataURL();
+    $($canvas.data('target')).val(data);
+    Ti.App.fireEvent('jp.co.mountposition.signview:change', {data: data, clear: false});
+  });
+  $canvas.on('mousemove touchmove', function(e) {
+    var context, x, y, _ref;
+    if (!drawFlag) {
+      return;
+    }
+    _ref = screen2client(e), x = _ref.x, y = _ref.y;
+    context = $canvas[0].getContext('2d');
+    context.strokeStyle = '#C71C22';
+    context.lineWidth = 1;
+    context.beginPath();
+    context.moveTo(oldX, oldY);
+    context.lineTo(x, y);
+    context.stroke();
+    context.closePath();
+    oldX = x;
+    oldY = y;
+    e.preventDefault();
+  });
+
+  $('.clear-canvas').on('click', function() {
+    var context;
+    context = $canvas[0].getContext('2d');
+    context.clearRect(0, 0, $canvas[0].width, $canvas[0].height);
+    $($canvas.data('target')).val(null);
+    Ti.App.fireEvent('jp.co.mountposition.signview:change', {data: '', clear: true});
+  });
+});

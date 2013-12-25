@@ -1,0 +1,13 @@
+{
+	"id": "jp.co.mountposition.signview",
+	"name": "jp.co.mountposition.signview",
+	"description" : "",
+	"author": "hamasyou",
+	"version": "1.0",
+	"copyright":"Copyright (c) 2013",
+	"license":"Public Domain",
+	"min-alloy-version": "1.0",
+	"min-titanium-version":"2.1",
+	"tags":"",
+	"platforms":"android,blackberry,ios,mobileweb,tizen"
+}

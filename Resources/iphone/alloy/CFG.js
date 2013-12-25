@@ -1,0 +1,1 @@
+module.exports={"dependencies":{"jp.co.mountposition.signview":"1.0"}};
